@@ -1,11 +1,11 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'yeeha/core/version'
+require 'yeeha_core/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "yeeha-core"
-  spec.version       = Yeeha::Core::VERSION
+  spec.version       = YeehaCore::VERSION
   spec.authors       = ["Jason YiZhang Chen"]
   spec.email         = ["a880074@gmail.com"]
   spec.summary       = "The heart of Yeeha"
@@ -14,4 +14,6 @@ Gem::Specification.new do |spec|
   spec.files         = `git ls-files -z`.split("\x0")
   spec.require_paths = ["lib"]
 
+  spec.add_dependency "nokogiri", '~> 1.6.2.1'
+  spec.add_dependency "chunky_png", '~> 1.3.1'
 end
