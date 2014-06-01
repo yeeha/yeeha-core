@@ -16,4 +16,6 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "nokogiri", '~> 1.6.2.1'
   spec.add_dependency "chunky_png", '~> 1.3.1'
+  spec.add_development_dependency "rake"
+  spec.add_development_dependency "rspec", '~> 2.14.1'
 end
