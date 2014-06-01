@@ -10,8 +10,3 @@ module Yeeha
     extend Query
   end
 end
-
-puts Yeeha::NTUTClient.login_course_system
-puts Yeeha::NTUTClient.login_course_system
-puts Yeeha::NTUTClient.login_course_system
-puts Yeeha::NTUTClient.login_course_system

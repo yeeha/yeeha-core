@@ -44,29 +44,39 @@ module Yeeha
         }
 
         def get_captcha_text
+          get_captcha do |captcha_path|
+            OCR_captcha(captcha_path)
+          end
+        end
 
+        private
+
+        def OCR_captcha(captcha_path)
+          # Mask
+          capchaImage = ChunkyPNG::Image.from_file(captcha_path)
+          capchaTextImage = capchaImage.extract_mask(CAPTCHA_COLOR, 0)[1]
+
+          # Crop & OCR
           captchaText = ""
-          # Get capcha
-          Dir.mktmpdir(CAPTCHA_TEMPDIR_PREFIX) {|dir|
-            open(dir + '/' + CAPTCHA_TEMPFILE_NAME, 'wb') do |file|
+          cropWidth = ((capchaTextImage.dimension.width)/CAPTCHA_LENGTH).round
+          CAPTCHA_LENGTH.times do |i|
+            capchaTextImageExcerpt = capchaTextImage.crop(
+              i*cropWidth, 0,
+              cropWidth, capchaTextImage.dimension.height)
+            key = Zlib.crc32(capchaTextImageExcerpt.to_s).to_s
+            captchaText += CAPTCHA_TABLE[key]
+          end
+          captchaText
+        end
+
+        def get_captcha(&block)
+          Dir.mktmpdir(CAPTCHA_TEMPDIR_PREFIX) { |dir|
+            captcha_path = dir + '/' + CAPTCHA_TEMPFILE_NAME
+            open(captcha_path, 'wb') do |file|
               file << open(CAPTCHA_URL).read
             end
-
-            # Mask
-            capchaImage = ChunkyPNG::Image.from_file(dir + '/' + CAPTCHA_TEMPFILE_NAME)
-            capchaTextImage = capchaImage.extract_mask(CAPTCHA_COLOR, 0)[1]
-
-            # Crop & OCR
-            cropWidth = ((capchaTextImage.dimension.width)/CAPTCHA_LENGTH).round
-            CAPTCHA_LENGTH.times do |i|
-              capchaTextImageExcerpt = capchaTextImage.crop(
-                i*cropWidth, 0,
-                cropWidth, capchaTextImage.dimension.height)
-              key = Zlib.crc32(capchaTextImageExcerpt.to_s).to_s
-              captchaText += CAPTCHA_TABLE[key]
-            end
+            yield captcha_path
           }
-          captchaText
         end
       end
     end
