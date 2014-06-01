@@ -43,8 +43,8 @@ module Yeeha
           "58008777"   => "z"
         }
 
-        def get_captcha_text
-          get_captcha do |captcha_path|
+        def get_captcha_text(cookie = '')
+          get_captcha(cookie) do |captcha_path|
             OCR_captcha(captcha_path)
           end
         end
@@ -69,11 +69,11 @@ module Yeeha
           captchaText
         end
 
-        def get_captcha(&block)
+        def get_captcha(cookie)
           Dir.mktmpdir(CAPTCHA_TEMPDIR_PREFIX) { |dir|
             captcha_path = dir + '/' + CAPTCHA_TEMPFILE_NAME
             open(captcha_path, 'wb') do |file|
-              file << open(CAPTCHA_URL).read
+              file << open(CAPTCHA_URL, cookie).read
             end
             yield captcha_path
           }
