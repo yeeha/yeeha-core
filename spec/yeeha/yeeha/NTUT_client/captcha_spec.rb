@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'Captcha' do
 
-  let(:captcha_class) {Class.new {extend Yeeha::NTUTClient::Logging::Captcha}}
+  let(:captcha_class) {Class.new {extend Yeeha::Logging::Captcha}}
 
   it 'should OCR captcha image' do
     captcha_path = File.dirname(__FILE__) + '/authImage.png'

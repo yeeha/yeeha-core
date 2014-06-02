@@ -1,12 +1,13 @@
-require 'yeeha/NTUT_client/logging'
 require 'yeeha/NTUT_client/query'
 
 module Yeeha
-  module NTUTClient
-    include Logging
-    extend Logging
+  class NTUTClient
+    attr_reader :studentId
 
     include Query
-    extend Query
+
+    def initialize(studentId)
+      @studentId = studentId
+    end
   end
 end
