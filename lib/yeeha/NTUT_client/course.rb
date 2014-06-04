@@ -1,26 +1,19 @@
-require 'yeeha/NTUT_client/middle'
-
 module Yeeha
   class Course
+    attr_accessor :number, :name, :stage, :credits, :hours, :must, :instructor, :class_belong, :class_room, :time
 
-    include CourseMiddle
-
-    def initialize(client, year, sem)
-      @client = client
-      @year = year
-      @sem = sem
-    end
-
-    def class_schedule
-      res = super
-      doc = Nokogiri::HTML(res.body)
-      doc.xpath('/html/body/table/tr[*]/td/a').each do |klass|
-        puts klass
-      end
-    end
-
-    def to_hash
-      {:year => @year, :sem => @sem}
+    def initialize
+      @number = 0
+      @name = ''
+      @stage = 0
+      @credits = 0
+      @hours = 0
+      @must = nil
+      @instructor = []
+      @class_belong = []
+      @class_room = []
+      @time = { :mon => [], :tue => [], :wed => [],
+                :thr => [], :fri => [], :sat => [], :sun => [] }
     end
   end
 end

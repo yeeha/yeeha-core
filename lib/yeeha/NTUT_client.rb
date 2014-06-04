@@ -1,6 +1,6 @@
 require 'nokogiri'
 require 'yeeha/NTUT_client/logging'
-require 'yeeha/NTUT_client/course'
+require 'yeeha/NTUT_client/course_list'
 require 'yeeha/NTUT_client/middle'
 
 module Yeeha
@@ -16,12 +16,12 @@ module Yeeha
     end
 
     def course_selection_list
-      res = super
+      body = super
       @course_list = []
-      doc = Nokogiri::HTML(res.body)
+      doc = Nokogiri::HTML(body)
       doc.xpath('/html/body/table/tr/td/a/@href').each do |course_link|
         course_link_hash = params_to_hash(course_link.content)
-        @course_list << Course.new(self, course_link_hash['year'], course_link_hash['sem'])
+        @course_list << CourseList.new(self, course_link_hash['year'], course_link_hash['sem'])
       end
       @course_list
     end
