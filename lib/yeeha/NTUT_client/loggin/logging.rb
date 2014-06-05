@@ -1,7 +1,7 @@
 require 'net/https'
 require 'nokogiri'
 require 'yeeha/config/config'
-require 'yeeha/NTUT_client/captcha'
+require 'yeeha/NTUT_client/loggin/captcha'
 
 module Yeeha
   module Logging
