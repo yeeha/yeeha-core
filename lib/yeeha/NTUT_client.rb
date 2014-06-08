@@ -1,17 +1,22 @@
-require 'yeeha/NTUT_client/loggin/logging'
 require 'yeeha/NTUT_client/middle/middle'
 
 module Yeeha
   class NTUTClient
 
-    include Logging
-    include Yeeha::Middle::CourseSelection
+    include Yeeha::Middle::Course
 
     attr_reader :student_id
 
     def initialize(student_id)
-      @client = self
       @student_id = student_id
+    end
+
+    def course_selection_list
+      @course_selection_list ||= super({:code => @student_id})
+    end
+
+    def class_schedule(query)
+      super(query)
     end
   end
 end

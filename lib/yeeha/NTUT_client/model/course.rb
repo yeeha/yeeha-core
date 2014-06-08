@@ -1,6 +1,7 @@
 module Yeeha
   module Model
     class Course
+
       attr_accessor :number, :name, :stage, :credits, :hours, :must, :instructor, :class_belong, :class_room, :time
 
       def initialize

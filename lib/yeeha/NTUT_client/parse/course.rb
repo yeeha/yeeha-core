@@ -1,12 +1,24 @@
 require 'yeeha/NTUT_client/model/course'
-require 'yeeha/NTUT_client/query/course'
+require 'yeeha/NTUT_client/model/course_selection_list'
 
 module Yeeha
   module Parse
     module Course
-      def class_schedule
-        body = super
+
+      def self.course_selection_list(body)
+        course_selection_list = []
         doc = Nokogiri::HTML(body)
+        doc.xpath('/html/body/table/tr/td/a/@href').each do |course_selection_link|
+          course_selection_link_hash = params_to_hash(course_selection_link.content)
+          course_selection_list << Yeeha::Model::CourseSelectionList.new(
+            course_selection_link_hash['year'], course_selection_link_hash['sem'])
+        end
+        course_selection_list
+      end
+
+      def self.class_schedule(body)
+        doc = Nokogiri::HTML(body)
+        course_list = []
         table = doc.xpath('//table').max_by {|t| t.xpath('.//tr').length}
         rows = table.search('tr')[3..-2]
         rows.each do |row|
@@ -35,13 +47,15 @@ module Yeeha
               end
             end
           end
-          @course_list << course
+          course_list << course
         end
-        @course_list
+        course_list
       end
 
-      def to_hash
-        {:year => @year, :sem => @sem}
+      private
+
+      def self.params_to_hash(params)
+        Hash[params.split('&').map{|d| d=d.split('='); [d[0], d[1]]}]
       end
     end
   end

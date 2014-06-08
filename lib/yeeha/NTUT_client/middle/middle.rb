@@ -1,16 +1,18 @@
 require 'yeeha/NTUT_client/query/course'
 require 'yeeha/NTUT_client/parse/course'
-require 'yeeha/NTUT_client/parse/course_selection_list'
 
 module Yeeha
   module Middle
     module Course
-      include Yeeha::Query::Course
-      include Yeeha::Parse::Course
-    end
-    module CourseSelection
-      include Yeeha::Query::CourseSelection
-      include Yeeha::Parse::CourseSelection
+      def course_selection_list(query)
+        Yeeha::Parse::Course.course_selection_list(
+        Yeeha::Query::Course.course_selection_list(query))
+      end
+
+      def class_schedule(query)
+        Yeeha::Parse::Course.class_schedule(
+        Yeeha::Query::Course.class_schedule(query))
+      end
     end
   end
 end
