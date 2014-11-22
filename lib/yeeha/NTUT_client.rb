@@ -16,7 +16,7 @@ module Yeeha
     end
 
     def class_schedule(query)
-      super(query)
+      super(query.merge({:code => @student_id}))
     end
   end
 end
