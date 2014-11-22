@@ -28,11 +28,11 @@ module Yeeha
             col.xpath('.//text()[normalize-space()]').each do |text|
               text = text.to_s.gsub("\u3000", '')
               case i
-                when 0  then course.number = text
+                when 0  then course.number = text.to_i
                 when 1  then course.name = text
-                when 2  then course.stage= text
-                when 3  then course.credits = text
-                when 4  then course.hours = text
+                when 2  then course.stage= text.to_i
+                when 3  then course.credits = text.to_i
+                when 4  then course.hours = text.to_i
                 when 5  then course.must = text=='必'
                 when 6  then course.instructor << text
                 when 7  then course.class_belong << text
